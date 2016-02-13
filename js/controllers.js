@@ -12,6 +12,7 @@ angular.module('monjournal.controllers', [])
 })
 
 .controller('HomepageCtrl', function($scope, Notes) {
+
     $scope.notes = Notes.all();
 })
 
@@ -20,6 +21,10 @@ angular.module('monjournal.controllers', [])
 })
 
 .controller('NewNoteCtrl', function($scope){
+    $scope.test = "Hola";
+})
+
+.controller('NoteCtrl', function($scope){
     $scope.test = "Hola";
 })
 

@@ -2,7 +2,8 @@
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="note in notes" href="#/app/notes/{{note.id}}">
-        {{note.title}}
+        <p><b>{{note.title}}</b></p>
+        <p>{{note.content}}</p>
       </ion-item>
     </ion-list>
   </ion-content>

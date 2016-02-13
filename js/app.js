@@ -1,6 +1,6 @@
 // database connection
 var db=null;
-angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers', 'monjournal.services'])
+angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers',  'monjournal.services'])
 
 .run(function($ionicPlatform, $cordovaSQLite) {
   $ionicPlatform.ready(function() {
@@ -14,11 +14,15 @@ angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers', 'm
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    db = $cordovaSQLite.openDB({ name: "monjournal"});
+    if (window.cordova) {
+        db = $cordovaSQLite.openDB({ name: "monjournal"}); //device
+    }else{
+        db = window.openDatabase("monjournalv0.0.1", '0.0.1', 'monjournal', 1024 * 1024 * 2); // browser
+    }
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS notes(\
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
         title TEXT NOT NULL,\
-        added TIMESTAMP NOT NULL,\
+        added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
         content TEXT\
     );");
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS categories(\
@@ -32,6 +36,24 @@ angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers', 'm
         FOREIGN KEY(idNote) REFERENCES notes(id),\
         FOREIGN KEY(idCategory) REFERENCES categories(id)\
     );");
+    // TEST DATA
+    var query = 'INSERT INTO notes (title, content) VALUES (?, ?)',
+        title = "First note",
+        content = "this is a first note to test";
+    var title2 = "Second note",
+        content2 = "this is a second note to test";
+    $cordovaSQLite.execute(db, query, [title,content]).then(function(res) {
+        console.log("INSERT ID -> " + res.insertId);
+    }, function (err) {
+        console.log("holla");
+        console.error(err + " : " + err.message);
+    });
+    $cordovaSQLite.execute(db, query, [title2,content2]).then(function(res) {
+        console.log("INSERT ID -> " + res.insertId);
+    }, function (err) {
+        console.log("holla");
+        console.error(err);
+    });
   });
 })
 
@@ -51,6 +73,16 @@ angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers', 'm
             'menuContent': {
                 templateUrl: 'templates/homepage.html',
                 controller: 'HomepageCtrl'
+            }
+        }
+    })
+
+    .state('app.note', {
+        url: '/notes/:noteId',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/note.html',
+                controller: 'NoteCtrl'
             }
         }
     })

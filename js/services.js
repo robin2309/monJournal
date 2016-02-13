@@ -1,7 +1,7 @@
 angular.module('monjournal.services', [])
 
-.factory('Notes', function() {
-	var notes=[
+.factory('Notes', function($cordovaSQLite) {
+	/*var notes=[
         {
             id:1, 
             title: 'Test1', 
@@ -12,10 +12,17 @@ angular.module('monjournal.services', [])
             title: 'Test2',
             content: 'Salut le monde'
         },
-    ];
+    ];*/
 
     return {
     	all: function(){
+            var notes = [];
+            var query = "SELECT * FROM notes ORDER BY added";
+            $cordovaSQLite.execute(db, query, []).then(function(res){
+                for (var i = 0; i < res.rows.length; i++) {
+                    notes.push(res.rows.item(i));
+                }
+            });
     		return notes;
     	}
     };
