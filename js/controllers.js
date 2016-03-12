@@ -12,8 +12,10 @@ angular.module('monjournal.controllers', [])
 })
 
 .controller('HomepageCtrl', function($scope, Notes) {
-
-    $scope.notes = Notes.all();
+    Notes.all().then(function(notes){
+        $scope.notes = notes;
+    });
+    //$scope.notes = Notes.all();
 })
 
 .controller('CategoriesCtrl', function($scope){
@@ -24,8 +26,10 @@ angular.module('monjournal.controllers', [])
     $scope.test = "Hola";
 })
 
-.controller('NoteCtrl', function($scope){
-    $scope.test = "Hola";
+.controller('NoteCtrl', function($scope, $stateParams, Notes){
+    Notes.getId($stateParams.noteId).then(function(note){
+        $scope.note = note;
+    });
 })
 
 .controller('PlaylistsCtrl', function($scope) {

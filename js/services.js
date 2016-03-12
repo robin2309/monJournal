@@ -17,13 +17,19 @@ angular.module('monjournal.services', [])
     return {
     	all: function(){
             var notes = [];
-            var query = "SELECT * FROM notes ORDER BY added";
-            $cordovaSQLite.execute(db, query, []).then(function(res){
+            var query = "SELECT * FROM notes ORDER BY added DESC";
+            return $cordovaSQLite.execute(db, query, []).then(function(res){
                 for (var i = 0; i < res.rows.length; i++) {
                     notes.push(res.rows.item(i));
                 }
+                return notes;
             });
-    		return notes;
-    	}
+    	},
+        getId: function(id){
+            return $cordovaSQLite.execute(db, "SELECT * FROM notes WHERE id=?", [id]).then(function(res){
+                console.log("1");
+                return res.rows.item(0);
+            });
+        },
     };
 });

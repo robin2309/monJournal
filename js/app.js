@@ -37,7 +37,7 @@ angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers',  '
         FOREIGN KEY(idCategory) REFERENCES categories(id)\
     );");
     // TEST DATA
-    var query = 'INSERT INTO notes (title, content) VALUES (?, ?)',
+    /*var query = 'INSERT INTO notes (title, content) VALUES (?, ?)',
         title = "First note",
         content = "this is a first note to test";
     var title2 = "Second note",
@@ -53,7 +53,7 @@ angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers',  '
     }, function (err) {
         console.log("holla");
         console.error(err);
-    });
+    });*/
   });
 })
 
