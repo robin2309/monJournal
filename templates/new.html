@@ -1,13 +1,16 @@
 <ion-view view-title="New">
-	<ion-content>
-		<label class="item item-input">
-    		<input type="text" placeholder="Title">
-  		</label>
-		<label class="item item-input">
-    		<input type="text" placeholder="Categories">
-  		</label>
-		<label class="item item-input">
-    		<textarea placeholder="Content"></textarea>
-  		</label>
-	</ion-content>
+    <ion-content>
+        <form ng-submit="newNote()">
+            <label class="item item-input">
+                <input ng-model="postData.title" type="text" placeholder="Title">
+            </label>
+            <label class="item item-input">
+                <input ng-model="postData.categories" type="text" placeholder="Categories">
+            </label>
+            <label class="item item-input">
+                <textarea ng-model="postData.content" placeholder="Content" rows="10"></textarea>
+            </label>
+            <button type="submit" class="button button-positive button-block">Create</button>
+        </form>
+    </ion-content>
 </ion-view>

@@ -1,6 +1,6 @@
 angular.module('monjournal.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,7 +8,14 @@ angular.module('monjournal.controllers', [])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
+    var CREATE_NEW_STATE = "app.new";
+    $scope.$on('$ionicView.beforeEnter', function(e){
+        if($state.current.name === CREATE_NEW_STATE){
+            $scope.$root.showAddButton = true;
+        } else {
+            $scope.$root.showAddButton = false;
+        }
+    });
 })
 
 .controller('HomepageCtrl', function($scope, Notes) {
@@ -22,26 +29,18 @@ angular.module('monjournal.controllers', [])
     $scope.test = "Hello from categories";
 })
 
-.controller('NewNoteCtrl', function($scope){
-    $scope.test = "Hola";
-})
-
 .controller('NoteCtrl', function($scope, $stateParams, Notes){
     Notes.getId($stateParams.noteId).then(function(note){
         $scope.note = note;
     });
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Zeub', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('NewNoteCtrl', function($scope, $stateParams, Notes){
+    $scope.postData = {};
+    $scope.newNote = function() {
+        console.log($scope.postData);
+        Notes.insert($scope.postData).then(function(insertedId){
+            $scope.insertId = insertedId;
+        });
+    }
 });

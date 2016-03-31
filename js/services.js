@@ -31,5 +31,12 @@ angular.module('monjournal.services', [])
                 return res.rows.item(0);
             });
         },
+        insert: function(postData){
+            var query = "INSERT INTO notes (title, content) VALUES (?, ?)";
+            return $cordovaSQLite.execute(db, query, [postData.title,postData.content]).then(function(res) {
+                console.log("INSERT ID -> " + res.insertId);
+                return res.insertId;
+            });
+        }
     };
 });

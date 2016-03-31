@@ -105,6 +105,16 @@ angular.module('monjournal', ['ionic', 'ngCordova', 'monjournal.controllers',  '
                 controller: 'NewNoteCtrl'
             }
         }
+    })
+
+    .state('app.new.create', {
+        url: '/new/create',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/homepage.html',
+                controller: 'CreateNoteCtrl'
+            }
+        }
     });
 
     /*;*/
